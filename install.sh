@@ -79,6 +79,9 @@ main() {
   echo "This reloads your shell, fonts, PATH, and terminal settings so"
   echo "new commands, prompt glyphs, icons, and completions render correctly."
   echo ""
+  echo "To re-open your WSL environment, open a new terminal and run:"
+  echo "  wsl -d Ubuntu"
+  echo ""
 }
 
 main "$@"

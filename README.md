@@ -25,7 +25,11 @@ Everything development-related lives inside **WSL2**.
 
 ---
 
+
+
 ## Fresh Machine Setup (Exact Steps)
+
+
 
 ### Part 1 — Windows (one-time, manual)
 
@@ -46,16 +50,18 @@ Restart if prompted. Open **Ubuntu** from the Start menu and create your Linux u
 
 #### Windows apps (manual install)
 
-| App | Purpose |
-|-----|---------|
-| [VS Code](https://code.visualstudio.com/) | Editor (use Remote - WSL) |
-| [Windows Terminal](https://aka.ms/terminal) | Terminal |
-| Browser | Docs, dashboards |
-| [Docker Desktop](https://www.docker.com/products/docker-desktop/) | Containers (optional) |
-| [Linear](https://linear.app/) | Issue tracking |
-| [Obsidian](https://obsidian.md/) | Notes |
-| [SourceTree](https://www.sourcetreeapp.com/) | Git GUI |
-| [Postman](https://www.postman.com/) | API testing |
+
+| App                                                               | Purpose                   |
+| ----------------------------------------------------------------- | ------------------------- |
+| [VS Code](https://code.visualstudio.com/)                         | Editor (use Remote - WSL) |
+| [Windows Terminal](https://aka.ms/terminal)                       | Terminal                  |
+| Browser                                                           | Docs, dashboards          |
+| [Docker Desktop](https://www.docker.com/products/docker-desktop/) | Containers (optional)     |
+| [Linear](https://linear.app/)                                     | Issue tracking            |
+| [Obsidian](https://obsidian.md/)                                  | Notes                     |
+| [SourceTree](https://www.sourcetreeapp.com/)                      | Git GUI                   |
+| [Postman](https://www.postman.com/)                               | API testing               |
+
 
 **VS Code extensions (recommended):**
 
@@ -70,6 +76,8 @@ Restart if prompted. Open **Ubuntu** from the Start menu and create your Linux u
 Enable Docker Desktop WSL integration: **Settings → Resources → WSL Integration → Ubuntu**.
 
 ---
+
+
 
 ### Part 2 — WSL2 Ubuntu (automated)
 
@@ -107,7 +115,7 @@ The installer will:
 
 Powerlevel10k setup installs and registers the Meslo Nerd Font on Windows, then sets that font everywhere prompt glyphs render — Windows Terminal, the legacy PowerShell/cmd console, VS Code, and Cursor. The repo no longer ships a prebuilt `~/.p10k.zsh`, so the Powerlevel10k configuration wizard runs automatically the first time zsh starts — follow its prompts to generate your own `~/.p10k.zsh`. You can re-run `p10k configure` anytime to change the style.
 
-> **Glyphs still showing as boxes or `?` after install?** This is always a *terminal font* problem, not a shell problem — the app you're looking at isn't using a Nerd Font yet. The installer configures Windows Terminal, the PowerShell/cmd console, VS Code, and Cursor automatically, but font changes never apply to already-open windows: **fully close and reopen the app** (console font changes only affect newly opened console windows). To set it by hand, point the terminal's font to **MesloLGS NF**.
+> **Glyphs still showing as boxes or** `?` **after install?** This is always a *terminal font* problem, not a shell problem — the app you're looking at isn't using a Nerd Font yet. The installer configures Windows Terminal, the PowerShell/cmd console, VS Code, and Cursor automatically, but font changes never apply to already-open windows: **fully close and reopen the app** (console font changes only affect newly opened console windows). To set it by hand, point the terminal's font to **MesloLGS NF**.
 
 Example language prompts:
 
@@ -138,6 +146,8 @@ code .
 
 ---
 
+
+
 ## Repository Structure
 
 ```
@@ -157,7 +167,11 @@ dev-env/
 
 ---
 
+
+
 ## Updating Your Environment
+
+
 
 ### Change a tool version
 
@@ -179,6 +193,8 @@ git pull
 mise install
 ```
 
+
+
 ### Add an apt package
 
 Add to `config/apt-packages.txt`, then:
@@ -187,23 +203,31 @@ Add to `config/apt-packages.txt`, then:
 ./install.sh
 ```
 
+
+
 ### Add a shell alias
 
 Edit `dotfiles/aliases.zsh`, commit, push, pull on other machines. Re-run `./install.sh` to refresh symlinks.
 
 ---
 
+
+
 ## Environment Model
 
-| Layer | Managed by | Location |
-|-------|-----------|----------|
-| Machine setup | this repo | `~/dev-env` |
-| Language versions | mise | `~/.config/mise/config.toml` |
-| Python venvs | uv | per-project `.venv/` |
-| Node frameworks | npm/pnpm | per-project `node_modules/` |
-| AWS credentials | you | `~/.aws/` |
-| Kubeconfig | you | `~/.kube/config` |
-| Project overrides | you | `.mise.toml`, `pyproject.toml`, etc. |
+
+| Layer             | Managed by | Location                             |
+| ----------------- | ---------- | ------------------------------------ |
+| Machine setup     | this repo  | `~/dev-env`                          |
+| Language versions | mise       | `~/.config/mise/config.toml`         |
+| Python venvs      | uv         | per-project `.venv/`                 |
+| Node frameworks   | npm/pnpm   | per-project `node_modules/`          |
+| AWS credentials   | you        | `~/.aws/`                            |
+| Kubeconfig        | you        | `~/.kube/config`                     |
+| Project overrides | you        | `.mise.toml`, `pyproject.toml`, etc. |
+
+
+
 
 ### Local secrets and work config
 
@@ -239,6 +263,8 @@ npx create-expo-app@latest my-app
 
 ---
 
+
+
 ## Python Environments
 
 **Rule:** `mise` = which Python version exists. `uv` = project venv + packages.
@@ -252,6 +278,8 @@ npx create-expo-app@latest my-app
 python = "3.13"
 ```
 
+
+
 ### Per-project override
 
 `my-api/.mise.toml`:
@@ -260,6 +288,8 @@ python = "3.13"
 [tools]
 python = "3.12"
 ```
+
+
 
 ### Workflow
 
@@ -274,6 +304,8 @@ uv run pytest
 uv run ruff check .
 ```
 
+
+
 ### Project layout
 
 ```
@@ -284,6 +316,8 @@ my-api/
 ├── .venv/           # do NOT commit (disposable)
 └── src/
 ```
+
+
 
 ### Multiple Python versions
 
@@ -300,6 +334,8 @@ No central `environments/` folder needed.
 
 ---
 
+
+
 ## Node Environments
 
 ```bash
@@ -315,17 +351,23 @@ npm run dev
 
 ---
 
+
+
 ## Go, Java, C/C++
 
-| Language | Version | Project files |
-|----------|---------|---------------|
-| Go | mise | `go.mod`, `cmd/`, `internal/` |
-| Java | mise | `build.gradle` or `pom.xml` |
-| C/C++ | apt (`gcc`, `clang`, `cmake`) | `CMakeLists.txt`, `Makefile` |
+
+| Language | Version                       | Project files                 |
+| -------- | ----------------------------- | ----------------------------- |
+| Go       | mise                          | `go.mod`, `cmd/`, `internal/` |
+| Java     | mise                          | `build.gradle` or `pom.xml`   |
+| C/C++    | apt (`gcc`, `clang`, `cmake`) | `CMakeLists.txt`, `Makefile`  |
+
 
 All compilation happens in WSL/Linux — no Windows compilers.
 
 ---
+
+
 
 ## AWS & Kubernetes
 
@@ -338,6 +380,8 @@ k9s                              # terminal UI
 Credentials never go in this repo.
 
 ---
+
+
 
 ## Scaffold New Projects
 
@@ -359,6 +403,8 @@ Templates live in `templates/`:
 
 ---
 
+
+
 ## Folder Structure
 
 ```
@@ -378,6 +424,8 @@ Templates live in `templates/`:
 ```
 
 ---
+
+
 
 ## Verification & Smoke Tests
 
@@ -400,9 +448,11 @@ Smoke tests verify:
 - Go (`go run`)
 - Java (`javac` + `java`)
 - C (`gcc`)
-- C++ (`clang++` / `g++`)
+- C++(`clang++`/`g++`)
 
 ---
+
+
 
 ## Re-run Anytime
 
@@ -417,6 +467,8 @@ dev-test      # smoke tests
 ```
 
 ---
+
+
 
 ## License
 
