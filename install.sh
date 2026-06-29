@@ -36,6 +36,9 @@ main() {
   # 6. uv (Python project environments)
   run_script "${DEV_ENV_SCRIPTS}/install-uv.sh"
 
+  # 6b. Homebrew (Linux CLI formulae)
+  run_script "${DEV_ENV_SCRIPTS}/install-homebrew.sh"
+
   # 7. AWS CLI
   run_script "${DEV_ENV_SCRIPTS}/install-aws.sh"
 

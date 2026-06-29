@@ -15,6 +15,7 @@ Windows (desktop only)
     ├── zsh + Oh My Zsh + Powerlevel10k
     ├── mise (language + CLI versions)
     ├── uv (Python project environments)
+    ├── Homebrew (extra Linux CLI formulae)
     ├── AWS CLI, kubectl, helm, k9s, terraform
     ├── C/C++ toolchain (apt)
     └── ~/code
@@ -98,7 +99,7 @@ The installer will:
 3. Set up zsh, Oh My Zsh, and Powerlevel10k (fonts, terminal config, and a preconfigured rainbow prompt)
 4. Link dotfiles into `$HOME`
 5. Install mise and selected tool versions from `config/mise.toml`
-6. Install uv (if Python selected), AWS CLI, Kubernetes tools
+6. Install uv (if Python selected), Homebrew (Linux CLI formulae), AWS CLI, Kubernetes tools
 7. Create `~/code` folder structure
 8. Configure Git (prompts for name/email) and SSH keys
 9. Verify installations

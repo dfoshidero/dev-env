@@ -26,6 +26,11 @@ fi
 # uv — use mise-managed Python
 export UV_PYTHON_PREFERENCE="${UV_PYTHON_PREFERENCE:-only-managed}"
 
+# Homebrew on Linux (WSL2) — adds brew to PATH, sets MANPATH/INFOPATH
+if [[ -x /home/linuxbrew/.linuxbrew/bin/brew ]]; then
+  eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+fi
+
 # Less
 export LESS='-R'
 

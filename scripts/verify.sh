@@ -4,6 +4,7 @@ source "$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)/bootstrap.sh"
 
 export PATH="${HOME}/.local/bin:${PATH}"
 [[ -f "${HOME}/.config/mise/config.toml" ]] && eval "$(mise activate bash 2>/dev/null)" || true
+[[ -x /home/linuxbrew/.linuxbrew/bin/brew ]] && eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv 2>/dev/null)" || true
 
 PASS=0
 FAIL=0
@@ -55,6 +56,7 @@ check_cmd "git"
 
 # Version managers
 check_cmd "mise"
+check_optional "brew"
 if language_selected python; then
   check_cmd "uv"
 else
