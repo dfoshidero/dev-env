@@ -39,25 +39,19 @@ main() {
   # 6b. Homebrew (Linux CLI formulae)
   run_script "${DEV_ENV_SCRIPTS}/install-homebrew.sh"
 
-  # 7. AWS CLI
-  run_script "${DEV_ENV_SCRIPTS}/install-aws.sh"
-
-  # 8. Kubernetes tools (via mise)
-  run_script "${DEV_ENV_SCRIPTS}/install-kubernetes.sh"
-
-  # 9. Docker CLI helpers
-  run_script "${DEV_ENV_SCRIPTS}/install-docker-tools.sh"
-
-  # 10. Folder structure
+  # 7. Folder structure
   run_script "${DEV_ENV_SCRIPTS}/create-folders.sh"
 
-  # 11. Git + SSH (interactive)
+  # 8. AWS CLI
+  run_script "${DEV_ENV_SCRIPTS}/install-aws.sh"
+
+  # 9. Git + SSH (interactive)
   run_script "${DEV_ENV_SCRIPTS}/configure-git.sh"
 
-  # 12. Verify installations
+  # 10. Verify installations
   run_script "${DEV_ENV_SCRIPTS}/verify.sh"
 
-  # 13. Optional smoke tests
+  # 11. Optional smoke tests
   echo ""
   if prompt_yes_no "Run language smoke tests now?" "y"; then
     run_script "${DEV_ENV_TESTS}/run-smoke-tests.sh"
@@ -68,7 +62,7 @@ main() {
   echo ""
   echo "Next steps:"
   echo "  1. Restart your terminal: close this window and open a new one"
-  echo "  2. Open a project:        cd ~/code/personal && code ."
+  echo "  2. Open a project:        cd ~/code/projects && code ."
   echo "  3. Re-run anytime:        ./install.sh"
   echo ""
   echo -e "${BOLD}========================================================${NC}"

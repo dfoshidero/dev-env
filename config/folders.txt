@@ -5,15 +5,10 @@
 .aws
 .kube
 .ssh
-.code-workspaces
 
 # Code workspace
 code
-code/personal
-code/work
 code/projects
-code/archive
 code/learning
-code/c
-code/go
-code/java
+code/work
+code/archive

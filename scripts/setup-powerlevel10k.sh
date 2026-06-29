@@ -45,7 +45,7 @@ install_meslo_fonts_linux() {
 }
 
 install_meslo_fonts_windows() {
-  local win_user win_fonts ps_install
+  local win_user ps_install
 
   win_user="$(windows_username)" || true
   [[ -n "${win_user:-}" ]] || {
@@ -60,13 +60,7 @@ install_meslo_fonts_windows() {
   fi
 
   if ! command_exists powershell.exe; then
-    log_warn "powershell.exe not found; copying fonts without Windows registration"
-    mkdir -p "$win_fonts"
-    for font in "${FONTS[@]}"; do
-      local src="${FONT_DIR}/${font}"
-      [[ -f "$src" ]] || continue
-      cp -f "$src" "${win_fonts}/${font}"
-    done
+    log_warn "powershell.exe not found; skipping Windows font registration"
     return 0
   fi
 

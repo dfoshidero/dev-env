@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # new-project.sh — scaffold a project from templates
 # Usage: ./scripts/new-project.sh <type> <name> [category]
-# Example: ./scripts/new-project.sh python my-api personal
+# Example: ./scripts/new-project.sh python my-api projects
 set -euo pipefail
 
 source "$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)/bootstrap.sh"
@@ -11,20 +11,16 @@ usage() {
 Usage: new-project.sh <type> <name> [category]
 
 Types:
-  python      -> ~/code/<category>/<name>
-  react       -> ~/code/<category>/<name>
-  go          -> ~/code/go/<name>
-  java        -> ~/code/java/<name>
-  c           -> ~/code/c/<name>
+  python, react, go, java, c  ->  ~/code/<category>/<name>
 
-Category defaults to 'personal' for python/react.
+Category defaults to 'projects'. Use: projects, learning, work, or archive.
 
 Examples:
-  ./scripts/new-project.sh python my-api personal
+  ./scripts/new-project.sh python my-api projects
   ./scripts/new-project.sh react dashboard work
-  ./scripts/new-project.sh go scraper
-  ./scripts/new-project.sh java spring-api
-  ./scripts/new-project.sh c parser
+  ./scripts/new-project.sh go scraper learning
+  ./scripts/new-project.sh java spring-api work
+  ./scripts/new-project.sh c parser projects
 EOF
   exit 1
 }
@@ -33,7 +29,7 @@ EOF
 
 TYPE="$1"
 NAME="$2"
-CATEGORY="${3:-personal}"
+CATEGORY="${3:-projects}"
 
 declare -A TEMPLATE_MAP=(
   [python]="python"
@@ -48,19 +44,12 @@ declare -A TEMPLATE_MAP=(
 TEMPLATE="${DEV_ENV_TEMPLATES}/${TEMPLATE_MAP[$TYPE]}"
 [[ -d "$TEMPLATE" ]] || die "Template not found: $TEMPLATE"
 
-case "$TYPE" in
-  go)    DEST="${HOME}/code/go/${NAME}" ;;
-  java)  DEST="${HOME}/code/java/${NAME}" ;;
-  c)     DEST="${HOME}/code/c/${NAME}" ;;
-  *)     DEST="${HOME}/code/${CATEGORY}/${NAME}" ;;
-esac
-
+DEST="${HOME}/code/${CATEGORY}/${NAME}"
 [[ ! -e "$DEST" ]] || die "Destination already exists: $DEST"
 
 mkdir -p "$(dirname "$DEST")"
 cp -a "$TEMPLATE/." "$DEST"
 
-# Rename placeholders in python template
 if [[ "$TYPE" == "python" && -d "${DEST}/src/my_api" ]]; then
   mv "${DEST}/src/my_api" "${DEST}/src/${NAME//-/_}"
   find "$DEST" -type f -exec sed -i "s/my-api/${NAME}/g; s/my_api/${NAME//-/_}/g" {} +

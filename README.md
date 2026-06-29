@@ -107,7 +107,7 @@ The installer will:
 3. Set up zsh, Oh My Zsh, and Powerlevel10k (theme, fonts, and terminal config)
 4. Link dotfiles into `$HOME`
 5. Install mise and selected tool versions from `config/mise.toml`
-6. Install uv (if Python selected), Homebrew (Linux CLI formulae), AWS CLI, Kubernetes tools
+6. Install uv (if Python selected), Homebrew (Linux CLI formulae), AWS CLI
 7. Create `~/code` folder structure
 8. Configure Git (prompts for name/email) and SSH keys
 9. Verify installations
@@ -140,7 +140,7 @@ p10k configure
 Open a project from WSL:
 
 ```bash
-cd ~/code/personal/my-project
+cd ~/code/projects/my-project
 code .
 ```
 
@@ -294,7 +294,7 @@ python = "3.12"
 ### Workflow
 
 ```bash
-cd ~/code/personal/my-api
+cd ~/code/projects/my-api
 mise install
 uv init          # new project
 uv add fastapi pytest ruff
@@ -386,11 +386,11 @@ Credentials never go in this repo.
 ## Scaffold New Projects
 
 ```bash
-./scripts/new-project.sh python my-api personal
+./scripts/new-project.sh python my-api projects
 ./scripts/new-project.sh react dashboard work
-./scripts/new-project.sh go scraper
-./scripts/new-project.sh java spring-api
-./scripts/new-project.sh c parser
+./scripts/new-project.sh go scraper projects
+./scripts/new-project.sh java spring-api work
+./scripts/new-project.sh c parser learning
 ```
 
 Templates live in `templates/`:
@@ -413,14 +413,10 @@ Templates live in `templates/`:
 ├── .aws, .kube, .ssh
 ├── dev-env/          # this repo
 └── code/
-    ├── personal/
-    ├── work/
-    ├── experiments/
-    ├── archive/
+    ├── projects/
     ├── learning/
-    ├── c/
-    ├── go/
-    └── java/
+    ├── work/
+    └── archive/
 ```
 
 ---

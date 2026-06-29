@@ -19,6 +19,5 @@ unzip -qo "$AWS_CLI_ZIP" -d /tmp
 sudo "$AWS_CLI_INSTALLER" --update
 rm -rf "$AWS_CLI_ZIP" /tmp/aws
 
-mkdir -p "${HOME}/.aws"
 log_ok "AWS CLI installed: $(aws --version 2>&1 | head -1)"
 log_info "Configure credentials with: aws configure"
