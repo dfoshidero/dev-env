@@ -1,0 +1,55 @@
+# Local secrets and machine-specific shell config
+.env
+.env.*
+*.pem
+id_rsa
+id_ed25519
+!*.pub
+
+# Python
+.venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Node
+node_modules/
+dist/
+build/
+.npm/
+
+# Java
+.gradle/
+build/
+target/
+*.class
+
+# Go
+bin/
+
+# C/C++
+cmake-build-*/
+*.o
+*.out
+*.exe
+
+# Installer artifacts
+.tmp/
+*.log
+*.zip
+*.tar.gz
+.aws-cli/
+.awscliv2.zip
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*~

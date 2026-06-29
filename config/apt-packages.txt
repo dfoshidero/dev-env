@@ -1,0 +1,33 @@
+# Core utilities
+git
+curl
+wget
+unzip
+zip
+ca-certificates
+gnupg
+software-properties-common
+apt-transport-https
+
+# Shell and CLI
+zsh
+fzf
+ripgrep
+jq
+
+# Build essentials and C/C++ toolchain
+build-essential
+gcc
+g++
+clang
+lldb
+gdb
+cmake
+make
+pkg-config
+libssl-dev
+libffi-dev
+zlib1g-dev
+
+# ShellCheck (optional linting for install scripts)
+shellcheck
