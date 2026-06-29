@@ -67,15 +67,18 @@ main() {
   log_ok "Installation complete!"
   echo ""
   echo "Next steps:"
-  echo "  1. Open a project:      cd ~/code/personal && code ."
-  echo "  2. Set up prompt:       p10k configure   # generates ~/.p10k.zsh (runs automatically on first zsh launch)"
-  echo "  3. Re-run anytime:      ./install.sh"
+  echo "  1. Restart your terminal: close this window and open a new one"
+  echo "  2. Open a project:        cd ~/code/personal && code ."
+  echo "  3. Re-run anytime:        ./install.sh"
   echo ""
-  if [[ -f /proc/version ]] && grep -qi microsoft /proc/version 2>/dev/null; then
-    log_info "Close and reopen Windows Terminal tabs if prompt icons look wrong"
-  fi
-  log_info "Restarting shell..."
-  exec zsh -l
+  echo -e "${BOLD}========================================================${NC}"
+  echo -e "${BOLD}  ⚠  RESTART YOUR TERMINAL NOW${NC}"
+  echo -e "${BOLD}========================================================${NC}"
+  echo ""
+  echo -e "${BOLD}Close this window completely and open a new terminal.${NC}"
+  echo "This reloads your shell, fonts, PATH, and terminal settings so"
+  echo "new commands, prompt glyphs, icons, and completions render correctly."
+  echo ""
 }
 
 main "$@"

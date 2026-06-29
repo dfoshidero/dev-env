@@ -105,7 +105,9 @@ The installer will:
 9. Verify installations
 10. Optionally run language smoke tests
 
-Powerlevel10k setup installs the Meslo Nerd Font and configures Windows Terminal and VS Code. The repo no longer ships a prebuilt `~/.p10k.zsh`, so the Powerlevel10k configuration wizard runs automatically the first time zsh starts — follow its prompts to generate your own `~/.p10k.zsh`. You can re-run `p10k configure` anytime to change the style. Close and reopen terminal tabs after install if glyphs still look wrong.
+Powerlevel10k setup installs and registers the Meslo Nerd Font on Windows, then sets that font everywhere prompt glyphs render — Windows Terminal, the legacy PowerShell/cmd console, VS Code, and Cursor. The repo no longer ships a prebuilt `~/.p10k.zsh`, so the Powerlevel10k configuration wizard runs automatically the first time zsh starts — follow its prompts to generate your own `~/.p10k.zsh`. You can re-run `p10k configure` anytime to change the style.
+
+> **Glyphs still showing as boxes or `?` after install?** This is always a *terminal font* problem, not a shell problem — the app you're looking at isn't using a Nerd Font yet. The installer configures Windows Terminal, the PowerShell/cmd console, VS Code, and Cursor automatically, but font changes never apply to already-open windows: **fully close and reopen the app** (console font changes only affect newly opened console windows). To set it by hand, point the terminal's font to **MesloLGS NF**.
 
 Example language prompts:
 

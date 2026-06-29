@@ -17,9 +17,10 @@ if [[ -t 1 ]]; then
   GREEN='\033[0;32m'
   YELLOW='\033[1;33m'
   BLUE='\033[0;34m'
+  BOLD='\033[1m'
   NC='\033[0m'
 else
-  RED='' GREEN='' YELLOW='' BLUE='' NC=''
+  RED='' GREEN='' YELLOW='' BLUE='' BOLD='' NC=''
 fi
 
 log_info()  { echo -e "${BLUE}[INFO]${NC}  $*"; }

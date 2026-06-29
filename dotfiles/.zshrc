@@ -49,8 +49,15 @@ source "$ZSH/oh-my-zsh.sh"
 [[ -f "$HOME/.aliases.zsh" ]] && source "$HOME/.aliases.zsh"
 [[ -f "$HOME/.functions.zsh" ]] && source "$HOME/.functions.zsh"
 
-# Powerlevel10k — run `p10k configure` once per machine to generate ~/.p10k.zsh
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+# Powerlevel10k prompt config (generated once per machine by `p10k configure`).
+# If it doesn't exist yet, launch the wizard automatically on the first
+# interactive session — i.e. after the post-install terminal restart.
+if [[ -f ~/.p10k.zsh ]]; then
+  source ~/.p10k.zsh
+elif [[ -o interactive ]] && [[ -t 0 ]] && (( $+functions[p10k] )); then
+  echo "No Powerlevel10k config found — starting the prompt setup wizard (p10k configure)..."
+  p10k configure
+fi
 
 # fzf key bindings
 [[ -f ~/.fzf.zsh ]] && source ~/.fzf.zsh
