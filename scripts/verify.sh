@@ -39,6 +39,12 @@ check_optional() {
   fi
 }
 
+check_skipped() {
+  local name="$1"
+  log_info "$name: skipped (not selected)"
+  WARN=$((WARN + 1))
+}
+
 echo ""
 log_info "Verifying development environment..."
 echo ""
@@ -49,13 +55,33 @@ check_cmd "git"
 
 # Version managers
 check_cmd "mise"
-check_cmd "uv"
+if language_selected python; then
+  check_cmd "uv"
+else
+  check_skipped "uv"
+fi
 
 # Languages (via mise)
-check_cmd "python" "python3"
-check_cmd "node"
-check_cmd "go"
-check_cmd "java"
+if language_selected python; then
+  check_cmd "python" "python3"
+else
+  check_skipped "python"
+fi
+if language_selected node; then
+  check_cmd "node"
+else
+  check_skipped "node"
+fi
+if language_selected go; then
+  check_cmd "go"
+else
+  check_skipped "go"
+fi
+if language_selected java; then
+  check_cmd "java"
+else
+  check_skipped "java"
+fi
 
 # Cloud / K8s
 check_cmd "aws"
@@ -65,16 +91,29 @@ check_cmd "k9s"
 check_cmd "terraform"
 
 # C/C++ toolchain
-check_cmd "gcc"
-check_cmd "clang"
-check_cmd "cmake"
-check_cmd "make"
-check_cmd "gdb"
+if language_selected cpp; then
+  check_cmd "gcc"
+  check_cmd "clang"
+  check_cmd "cmake"
+  check_cmd "make"
+  check_cmd "gdb"
+else
+  check_skipped "gcc"
+  check_skipped "clang"
+  check_skipped "cmake"
+  check_skipped "make"
+  check_skipped "gdb"
+fi
 
 # Optional
 check_optional "docker"
-check_optional "npm"
-check_optional "corepack"
+if language_selected node; then
+  check_optional "npm"
+  check_optional "corepack"
+else
+  check_skipped "npm"
+  check_skipped "corepack"
+fi
 
 echo ""
 echo "----------------------------------------"

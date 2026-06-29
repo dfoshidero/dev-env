@@ -3,6 +3,10 @@
 # Repo path (override in ~/.dev-env-local.zsh if cloned elsewhere)
 export DEV_ENV_REPO="${DEV_ENV_REPO:-$HOME/dev-env}"
 
+# UTF-8 locale (required for Powerlevel10k icons and glyphs)
+export LANG="${LANG:-C.UTF-8}"
+export LC_ALL="${LC_ALL:-C.UTF-8}"
+
 export EDITOR="${EDITOR:-code --wait}"
 export VISUAL="${VISUAL:-$EDITOR}"
 export PAGER="${PAGER:-less}"

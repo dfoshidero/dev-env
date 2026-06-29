@@ -2,6 +2,11 @@
 set -euo pipefail
 source "$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)/bootstrap.sh"
 
+if ! language_selected python; then
+  log_info "Skipping uv (Python not selected)"
+  exit 0
+fi
+
 UV_INSTALL_URL="https://astral.sh/uv/install.sh"
 
 if command_exists uv; then

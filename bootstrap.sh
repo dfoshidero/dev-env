@@ -111,7 +111,11 @@ install_apt_packages_from_file() {
     line="${line%%#*}"
     line="$(echo "$line" | xargs)"
     [[ -n "$line" ]] || continue
-    apt_install_if_missing "$line"
+    if should_install_apt_package "$line"; then
+      apt_install_if_missing "$line"
+    else
+      log_info "Skipping apt package (C/C++ not selected): $line"
+    fi
   done < "$file"
 }
 
@@ -129,7 +133,91 @@ prompt_yes_no() {
   [[ "$reply" =~ ^[Yy]$ ]]
 }
 
+# Language selection (exported for child install scripts; default 1 = install all)
+language_selected() {
+  local lang="$1"
+  case "$lang" in
+    python) [[ "${DEV_ENV_INSTALL_PYTHON:-1}" == 1 ]] ;;
+    node)   [[ "${DEV_ENV_INSTALL_NODE:-1}" == 1 ]] ;;
+    go)     [[ "${DEV_ENV_INSTALL_GO:-1}" == 1 ]] ;;
+    java)   [[ "${DEV_ENV_INSTALL_JAVA:-1}" == 1 ]] ;;
+    cpp)    [[ "${DEV_ENV_INSTALL_CPP:-1}" == 1 ]] ;;
+    *) die "Unknown language: $lang" ;;
+  esac
+}
+
+is_cpp_apt_package() {
+  case "$1" in
+    build-essential|gcc|g++|clang|lldb|gdb|cmake|make|pkg-config|libssl-dev|libffi-dev|zlib1g-dev)
+      return 0
+      ;;
+    *)
+      return 1
+      ;;
+  esac
+}
+
+should_install_apt_package() {
+  local pkg="$1"
+  if is_cpp_apt_package "$pkg" && ! language_selected cpp; then
+    return 1
+  fi
+  return 0
+}
+
+read_mise_tool_line() {
+  local tool="$1"
+  local file="${2:-${DEV_ENV_CONFIG}/mise.toml}"
+  grep -E "^${tool}[[:space:]]*=" "$file" | head -1 || true
+}
+
+prompt_language_selection() {
+  echo ""
+  log_info "Select languages to install (press Enter to accept the default):"
+  echo ""
+
+  if prompt_yes_no "Install Python?" "y"; then
+    export DEV_ENV_INSTALL_PYTHON=1
+  else
+    export DEV_ENV_INSTALL_PYTHON=0
+  fi
+
+  if prompt_yes_no "Install Node.js?" "y"; then
+    export DEV_ENV_INSTALL_NODE=1
+  else
+    export DEV_ENV_INSTALL_NODE=0
+  fi
+
+  if prompt_yes_no "Install Go?" "y"; then
+    export DEV_ENV_INSTALL_GO=1
+  else
+    export DEV_ENV_INSTALL_GO=0
+  fi
+
+  if prompt_yes_no "Install Java?" "y"; then
+    export DEV_ENV_INSTALL_JAVA=1
+  else
+    export DEV_ENV_INSTALL_JAVA=0
+  fi
+
+  if prompt_yes_no "Install C/C++ toolchain?" "y"; then
+    export DEV_ENV_INSTALL_CPP=1
+  else
+    export DEV_ENV_INSTALL_CPP=0
+  fi
+
+  echo ""
+  log_info "Language selection summary:"
+  language_selected python && echo "  Python: yes" || echo "  Python: no"
+  language_selected node   && echo "  Node.js: yes" || echo "  Node.js: no"
+  language_selected go     && echo "  Go: yes" || echo "  Go: no"
+  language_selected java   && echo "  Java: yes" || echo "  Java: no"
+  language_selected cpp    && echo "  C/C++ toolchain: yes" || echo "  C/C++ toolchain: no"
+  echo ""
+}
+
 export -f log_info log_ok log_warn log_error die require_linux require_wsl2
 export -f command_exists run_script backup_file link_or_copy_dotfile
 export -f apt_install_if_missing ensure_sudo ensure_apt_updated install_apt_packages_from_file
-export -f prompt_yes_no
+export -f prompt_yes_no language_selected is_cpp_apt_package should_install_apt_package
+export -f read_mise_tool_line prompt_language_selection

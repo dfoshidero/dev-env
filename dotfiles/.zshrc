@@ -22,6 +22,9 @@ if command -v mise &>/dev/null; then
   eval "$(mise activate zsh)"
 fi
 
+# Powerlevel10k / Windows Terminal: fix right-prompt spacing and glyph alignment
+ZLE_RPROMPT_INDENT=0
+
 # Oh My Zsh
 export ZSH="$HOME/.oh-my-zsh"
 ZSH_THEME="powerlevel10k/powerlevel10k"
@@ -46,7 +49,7 @@ source "$ZSH/oh-my-zsh.sh"
 [[ -f "$HOME/.aliases.zsh" ]] && source "$HOME/.aliases.zsh"
 [[ -f "$HOME/.functions.zsh" ]] && source "$HOME/.functions.zsh"
 
-# Powerlevel10k — run `p10k configure` once to customize
+# Powerlevel10k — rainbow config from p10k configure (managed in dev-env dotfiles)
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 # fzf key bindings
@@ -67,3 +70,10 @@ autoload -Uz compinit && compinit
 bindkey -e
 
 setopt PROMPT_SUBST
+
+# WSL: start in home instead of /mnt/c (Windows Terminal default)
+if [[ -f /proc/version ]] && grep -qi microsoft /proc/version 2>/dev/null; then
+  if [[ -o login ]] || [[ "$PWD" == /mnt/c/* ]]; then
+    builtin cd ~ 2>/dev/null || true
+  fi
+fi

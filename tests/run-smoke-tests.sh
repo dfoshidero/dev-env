@@ -30,7 +30,7 @@ run_test() {
 
 test_python() {
   local dir="${TEST_DIR}/python"
-  mkdir -p "$dir/src"
+  mkdir -p "$dir/src/smoke_test"
   cd "$dir"
 
   cat > pyproject.toml <<'EOF'
@@ -152,12 +152,37 @@ echo ""
 log_info "Running language smoke tests in $TEST_DIR"
 echo ""
 
-run_test "Python (uv + mise)" test_python
-run_test "Node.js" test_node
-run_test "Go" test_go
-run_test "Java" test_java
-run_test "C (gcc)" test_c
-run_test "C++ (clang++/g++)" test_cpp
+if language_selected python; then
+  run_test "Python (uv + mise)" test_python
+else
+  log_info "Skipping Python smoke test (not selected)"
+fi
+if language_selected node; then
+  run_test "Node.js" test_node
+else
+  log_info "Skipping Node.js smoke test (not selected)"
+fi
+if language_selected go; then
+  run_test "Go" test_go
+else
+  log_info "Skipping Go smoke test (not selected)"
+fi
+if language_selected java; then
+  run_test "Java" test_java
+else
+  log_info "Skipping Java smoke test (not selected)"
+fi
+if language_selected cpp; then
+  run_test "C (gcc)" test_c
+  run_test "C++ (clang++/g++)" test_cpp
+else
+  log_info "Skipping C/C++ smoke tests (not selected)"
+fi
+
+if [[ $PASS -eq 0 && $FAIL -eq 0 ]]; then
+  log_warn "No smoke tests were run (no languages selected)"
+  exit 0
+fi
 
 echo ""
 echo "----------------------------------------"

@@ -16,11 +16,16 @@ main() {
   require_linux
   require_wsl2
 
+  prompt_language_selection
+
   # 1. Apt packages
   run_script "${DEV_ENV_SCRIPTS}/install-apt-packages.sh"
 
   # 2. Shell (zsh, Oh My Zsh, Powerlevel10k)
   run_script "${DEV_ENV_SCRIPTS}/install-ohmyzsh.sh"
+
+  # 2b. Meslo Nerd Font + Windows Terminal / VS Code font config
+  run_script "${DEV_ENV_SCRIPTS}/install-p10k-fonts.sh"
 
   # 3. mise + tool versions
   run_script "${DEV_ENV_SCRIPTS}/install-mise.sh"
@@ -59,11 +64,12 @@ main() {
   log_ok "Installation complete!"
   echo ""
   echo "Next steps:"
-  echo "  1. Restart your shell:  exec zsh"
-  echo "  2. Customize prompt:    p10k configure"
-  echo "  3. Open a project:      cd ~/code/personal && code ."
-  echo "  4. Re-run anytime:    ./install.sh"
+  echo "  1. Tweak prompt:        p10k configure"
+  echo "  2. Open a project:      cd ~/code/personal && code ."
+  echo "  3. Re-run anytime:      ./install.sh"
   echo ""
+  log_info "Restarting shell..."
+  exec zsh -l
 }
 
 main "$@"

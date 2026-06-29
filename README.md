@@ -93,21 +93,35 @@ chmod +x install.sh
 
 The installer will:
 
-1. Install apt packages (build tools, git, zsh, fzf, etc.)
-2. Set up zsh, Oh My Zsh, Powerlevel10k
-3. Install mise and all tool versions from `config/mise.toml`
-4. Install uv, AWS CLI, Kubernetes tools
-5. Link dotfiles into `$HOME`
-6. Create `~/code` folder structure
-7. Configure Git (prompts for name/email) and SSH keys
-8. Verify installations
-9. Optionally run language smoke tests
+1. Ask which languages to install (Python, Node.js, Go, Java, C/C++ toolchain) — press **Enter** to accept the default (`Y`) for each
+2. Install apt packages (build tools, git, zsh, fzf, etc.)
+3. Set up zsh, Oh My Zsh, Powerlevel10k, and Meslo Nerd Font (Windows Terminal + VS Code)
+4. Install mise and selected tool versions from `config/mise.toml`
+5. Install uv (if Python selected), AWS CLI, Kubernetes tools
+6. Link dotfiles into `$HOME`
+7. Create `~/code` folder structure
+8. Configure Git (prompts for name/email) and SSH keys
+9. Verify installations
+10. Optionally run language smoke tests
 
-After install:
+Powerlevel10k icons and powerline symbols require the **MesloLGS NF** font. The installer downloads it, installs it on Windows and WSL, and sets Windows Terminal and VS Code to use it. Close and reopen terminal tabs after install if glyphs still look wrong.
+
+Example language prompts:
 
 ```bash
-exec zsh
-p10k configure   # optional: customize prompt
+Install Python? [Y/n]: y
+Install Node.js? [Y/n]: n
+Install Go? [Y/n]: y
+Install Java? [Y/n]: n
+Install C/C++ toolchain? [Y/n]: y
+```
+
+Skipped languages are not installed, verified, or smoke-tested. Shared CLI tools (`kubectl`, `helm`, `k9s`, `terraform`) are always installed.
+
+After install, the installer automatically restarts your shell into zsh with your Powerlevel10k rainbow prompt preconfigured. New WSL sessions also open in `~` instead of `/mnt/c/Users/...` (Windows Terminal's default). To tweak the prompt later:
+
+```bash
+p10k configure   # customize prompt
 ```
 
 Open a project from WSL:
