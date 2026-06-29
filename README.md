@@ -1,8 +1,8 @@
 # dev-env
 
-Infrastructure-as-Code for your Windows + WSL2 development machine.
+Infrastructure-as-Code easy environment setup for Windows + WSL2 development machine.
 
-**Goal:** Wipe your machine, install WSL2, clone one repository, run one command, and have your complete development environment back in ~10 minutes.
+Allows to easily restart from a fresh machine: install WSL2, clone one repository, run one command, and have complete development environment back in ~10 minutes.
 
 ```
 Windows (desktop only)
@@ -83,7 +83,7 @@ sudo apt install -y git
 
 # 3. Clone this repo (recommended location)
 cd ~
-git clone git@github.com:dfoshidero/dev-env.git
+git clone https://github.com/dfoshidero/dev-env.git
 cd dev-env
 
 # 4. Run the installer
