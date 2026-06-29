@@ -25,11 +25,6 @@ fi
 # Powerlevel10k / Windows Terminal: fix right-prompt spacing and glyph alignment
 ZLE_RPROMPT_INDENT=0
 
-# Dev-env ships ~/.p10k.zsh — skip the interactive configure wizard on first launch
-if [[ -f ~/.p10k.zsh ]]; then
-  typeset -g POWERLEVEL9K_DISABLE_CONFIGURATION_WIZARD=true
-fi
-
 # Oh My Zsh
 export ZSH="$HOME/.oh-my-zsh"
 ZSH_THEME="powerlevel10k/powerlevel10k"
@@ -54,7 +49,7 @@ source "$ZSH/oh-my-zsh.sh"
 [[ -f "$HOME/.aliases.zsh" ]] && source "$HOME/.aliases.zsh"
 [[ -f "$HOME/.functions.zsh" ]] && source "$HOME/.functions.zsh"
 
-# Powerlevel10k — rainbow config from p10k configure (managed in dev-env dotfiles)
+# Powerlevel10k — run `p10k configure` once per machine to generate ~/.p10k.zsh
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 # fzf key bindings

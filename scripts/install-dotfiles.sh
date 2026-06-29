@@ -6,8 +6,6 @@ source "$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)/bootstrap.sh"
 link_or_copy_dotfile "${DEV_ENV_DOTFILES}/.zshrc"       "${HOME}/.zshrc"
 link_or_copy_dotfile "${DEV_ENV_DOTFILES}/aliases.zsh"  "${HOME}/.aliases.zsh"
 link_or_copy_dotfile "${DEV_ENV_DOTFILES}/exports.zsh"  "${HOME}/.exports.zsh"
-link_or_copy_dotfile "${DEV_ENV_DOTFILES}/.p10k.zsh"    "${HOME}/.p10k.zsh"
-link_or_copy_dotfile "${DEV_ENV_DOTFILES}/functions.zsh" "${HOME}/.functions.zsh"
 
 # Local override for repo path and secrets (not tracked in git)
 LOCAL_ENV_FILE="${HOME}/.dev-env-local.zsh"

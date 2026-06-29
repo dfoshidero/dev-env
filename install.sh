@@ -24,10 +24,10 @@ main() {
   # 2. Shell (zsh, Oh My Zsh, Powerlevel10k theme)
   run_script "${DEV_ENV_SCRIPTS}/install-ohmyzsh.sh"
 
-  # 3. Dotfiles (link ~/.p10k.zsh before p10k setup)
+  # 3. Dotfiles
   run_script "${DEV_ENV_SCRIPTS}/install-dotfiles.sh"
 
-  # 4. Meslo font, Windows Terminal font, and p10k activation
+  # 4. Meslo font and Windows Terminal font (run `p10k configure` manually)
   run_script "${DEV_ENV_SCRIPTS}/setup-powerlevel10k.sh"
 
   # 5. mise + tool versions
@@ -68,7 +68,7 @@ main() {
   echo ""
   echo "Next steps:"
   echo "  1. Open a project:      cd ~/code/personal && code ."
-  echo "  2. Change prompt:       p10k configure   # optional — only if you want a different style"
+  echo "  2. Set up prompt:       p10k configure   # generates ~/.p10k.zsh (runs automatically on first zsh launch)"
   echo "  3. Re-run anytime:      ./install.sh"
   echo ""
   if [[ -f /proc/version ]] && grep -qi microsoft /proc/version 2>/dev/null; then
