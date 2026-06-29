@@ -1,6 +1,7 @@
 # Configure Windows Terminal to use MesloLGS NF (Powerlevel10k recommended font).
 param(
-    [string]$FontFace = "MesloLGS NF"
+    [string]$FontFace = "MesloLGS NF",
+    [int]$FontSize = 11
 )
 
 $ErrorActionPreference = "Stop"
@@ -16,24 +17,17 @@ function Set-ProfileFont {
     if ($null -eq $Profile) { return }
 
     if ($null -eq $Profile.font) {
-        $Profile | Add-Member -MemberType NoteProperty -Name font -Value ([PSCustomObject]@{ face = $FontFace })
+        $Profile | Add-Member -MemberType NoteProperty -Name font -Value ([PSCustomObject]@{
+            face = $FontFace
+            size = $FontSize
+        })
         return
     }
 
     $Profile.font | Add-Member -MemberType NoteProperty -Name face -NotePropertyValue $FontFace -Force
-}
-
-function Test-WslProfile {
-    param($Profile)
-
-    if ($null -eq $Profile) { return $false }
-    if ($Profile.PSObject.Properties.Match("hidden").Count -gt 0 -and $Profile.hidden -eq $true) { return $false }
-
-    if ($Profile.PSObject.Properties.Match("source").Count -gt 0 -and $Profile.source -like "*WSL*") { return $true }
-    if ($Profile.PSObject.Properties.Match("commandline").Count -gt 0 -and $Profile.commandline -match "(?i)wsl|ubuntu|debian") { return $true }
-    if ($Profile.PSObject.Properties.Match("name").Count -gt 0 -and $Profile.name -match "(?i)ubuntu|wsl|debian") { return $true }
-
-    return $false
+    if ($null -eq $Profile.font.PSObject.Properties['size']) {
+        $Profile.font | Add-Member -MemberType NoteProperty -Name size -NotePropertyValue $FontSize
+    }
 }
 
 $updated = $false
@@ -46,9 +40,10 @@ foreach ($path in $paths) {
         Set-ProfileFont -Profile $json.profiles.defaults
 
         foreach ($profile in $json.profiles.list) {
-            if (Test-WslProfile -Profile $profile) {
-                Set-ProfileFont -Profile $profile
+            if ($profile.PSObject.Properties.Match("hidden").Count -gt 0 -and $profile.hidden -eq $true) {
+                continue
             }
+            Set-ProfileFont -Profile $profile
         }
 
         $json | ConvertTo-Json -Depth 100 | Set-Content -LiteralPath $path -Encoding UTF8

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Install Meslo Nerd Font (Powerlevel10k recommended) and configure Windows Terminal / VS Code.
+# setup-powerlevel10k.sh — Meslo font, terminal font config, and p10k activation
 set -euo pipefail
 source "$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)/bootstrap.sh"
 
@@ -38,14 +38,14 @@ install_meslo_fonts_linux() {
   done
 
   if command_exists fc-cache; then
-    fc-cache -f "$FONT_DIR" 2>/dev/null || true
+    fc-cache -f "${HOME}/.local/share/fonts" 2>/dev/null || true
   fi
 
   log_ok "Meslo Nerd Font installed -> $FONT_DIR"
 }
 
 install_meslo_fonts_windows() {
-  local win_user win_fonts
+  local win_user win_fonts ps_install
 
   win_user="$(windows_username)" || true
   [[ -n "${win_user:-}" ]] || {
@@ -59,15 +59,26 @@ install_meslo_fonts_windows() {
     return 0
   fi
 
-  mkdir -p "$win_fonts"
+  if ! command_exists powershell.exe; then
+    log_warn "powershell.exe not found; copying fonts without Windows registration"
+    mkdir -p "$win_fonts"
+    for font in "${FONTS[@]}"; do
+      local src="${FONT_DIR}/${font}"
+      [[ -f "$src" ]] || continue
+      cp -f "$src" "${win_fonts}/${font}"
+    done
+    return 0
+  fi
 
-  for font in "${FONTS[@]}"; do
-    local src="${FONT_DIR}/${font}"
-    [[ -f "$src" ]] || continue
-    cp -f "$src" "${win_fonts}/${font}"
-  done
+  ps_install="${DEV_ENV_SCRIPTS}/install-windows-fonts.ps1"
+  [[ -f "$ps_install" ]] || die "Missing script: $ps_install"
 
-  log_ok "Meslo Nerd Font copied to Windows Fonts folder"
+  log_info "Registering Meslo Nerd Font on Windows (required for Windows Terminal glyphs)..."
+  if powershell.exe -NoProfile -ExecutionPolicy Bypass -File "$(wslpath -w "$ps_install")" -FontsDir "$(wslpath -w "$FONT_DIR")"; then
+    log_ok "Meslo Nerd Font registered on Windows"
+  else
+    log_warn "Windows font registration failed — glyphs may show as boxes until font is installed"
+  fi
 }
 
 configure_windows_terminal() {
@@ -106,7 +117,8 @@ configure_vscode_terminal_font() {
   fi
 
   tmp="$(mktemp)"
-  if jq --arg font "MesloLGS NF" '.["terminal.integrated.fontFamily"] = $font' "$settings" > "$tmp"; then
+  if jq '.["terminal.integrated.fontFamily"] = "MesloLGS NF, MesloLGS NF Regular, monospace"' \
+    "$settings" > "$tmp"; then
     mv "$tmp" "$settings"
     log_ok "VS Code terminal font set to MesloLGS NF"
   else
@@ -127,3 +139,12 @@ else
 fi
 
 log_ok "Powerlevel10k font setup complete"
+
+# Preload instant prompt and apply repo-managed ~/.p10k.zsh (non-interactive)
+if command_exists zsh && [[ -f "${HOME}/.p10k.zsh" ]]; then
+  log_info "Activating Powerlevel10k configuration..."
+  POWERLEVEL9K_DISABLE_CONFIGURATION_WIZARD=true zsh -lic 'exit' 2>/dev/null || true
+  log_ok "Powerlevel10k configuration active"
+elif [[ ! -f "${HOME}/.p10k.zsh" ]]; then
+  log_warn "~/.p10k.zsh not found — link dotfiles before setup-powerlevel10k.sh"
+fi

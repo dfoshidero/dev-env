@@ -21,40 +21,40 @@ main() {
   # 1. Apt packages
   run_script "${DEV_ENV_SCRIPTS}/install-apt-packages.sh"
 
-  # 2. Shell (zsh, Oh My Zsh, Powerlevel10k)
+  # 2. Shell (zsh, Oh My Zsh, Powerlevel10k theme)
   run_script "${DEV_ENV_SCRIPTS}/install-ohmyzsh.sh"
 
-  # 2b. Meslo Nerd Font + Windows Terminal / VS Code font config
-  run_script "${DEV_ENV_SCRIPTS}/install-p10k-fonts.sh"
-
-  # 3. mise + tool versions
-  run_script "${DEV_ENV_SCRIPTS}/install-mise.sh"
-
-  # 4. uv (Python project environments)
-  run_script "${DEV_ENV_SCRIPTS}/install-uv.sh"
-
-  # 5. AWS CLI
-  run_script "${DEV_ENV_SCRIPTS}/install-aws.sh"
-
-  # 6. Kubernetes tools (via mise)
-  run_script "${DEV_ENV_SCRIPTS}/install-kubernetes.sh"
-
-  # 7. Docker CLI helpers
-  run_script "${DEV_ENV_SCRIPTS}/install-docker-tools.sh"
-
-  # 8. Dotfiles
+  # 3. Dotfiles (link ~/.p10k.zsh before p10k setup)
   run_script "${DEV_ENV_SCRIPTS}/install-dotfiles.sh"
 
-  # 9. Folder structure
+  # 4. Meslo font, Windows Terminal font, and p10k activation
+  run_script "${DEV_ENV_SCRIPTS}/setup-powerlevel10k.sh"
+
+  # 5. mise + tool versions
+  run_script "${DEV_ENV_SCRIPTS}/install-mise.sh"
+
+  # 6. uv (Python project environments)
+  run_script "${DEV_ENV_SCRIPTS}/install-uv.sh"
+
+  # 7. AWS CLI
+  run_script "${DEV_ENV_SCRIPTS}/install-aws.sh"
+
+  # 8. Kubernetes tools (via mise)
+  run_script "${DEV_ENV_SCRIPTS}/install-kubernetes.sh"
+
+  # 9. Docker CLI helpers
+  run_script "${DEV_ENV_SCRIPTS}/install-docker-tools.sh"
+
+  # 10. Folder structure
   run_script "${DEV_ENV_SCRIPTS}/create-folders.sh"
 
-  # 10. Git + SSH (interactive)
+  # 11. Git + SSH (interactive)
   run_script "${DEV_ENV_SCRIPTS}/configure-git.sh"
 
-  # 11. Verify installations
+  # 12. Verify installations
   run_script "${DEV_ENV_SCRIPTS}/verify.sh"
 
-  # 12. Optional smoke tests
+  # 13. Optional smoke tests
   echo ""
   if prompt_yes_no "Run language smoke tests now?" "y"; then
     run_script "${DEV_ENV_TESTS}/run-smoke-tests.sh"
@@ -64,10 +64,13 @@ main() {
   log_ok "Installation complete!"
   echo ""
   echo "Next steps:"
-  echo "  1. Tweak prompt:        p10k configure"
-  echo "  2. Open a project:      cd ~/code/personal && code ."
+  echo "  1. Open a project:      cd ~/code/personal && code ."
+  echo "  2. Change prompt:       p10k configure   # optional — only if you want a different style"
   echo "  3. Re-run anytime:      ./install.sh"
   echo ""
+  if [[ -f /proc/version ]] && grep -qi microsoft /proc/version 2>/dev/null; then
+    log_info "Close and reopen Windows Terminal tabs if prompt icons look wrong"
+  fi
   log_info "Restarting shell..."
   exec zsh -l
 }

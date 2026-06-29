@@ -95,16 +95,16 @@ The installer will:
 
 1. Ask which languages to install (Python, Node.js, Go, Java, C/C++ toolchain) — press **Enter** to accept the default (`Y`) for each
 2. Install apt packages (build tools, git, zsh, fzf, etc.)
-3. Set up zsh, Oh My Zsh, Powerlevel10k, and Meslo Nerd Font (Windows Terminal + VS Code)
-4. Install mise and selected tool versions from `config/mise.toml`
-5. Install uv (if Python selected), AWS CLI, Kubernetes tools
-6. Link dotfiles into `$HOME`
+3. Set up zsh, Oh My Zsh, and Powerlevel10k (fonts, terminal config, and a preconfigured rainbow prompt)
+4. Link dotfiles into `$HOME`
+5. Install mise and selected tool versions from `config/mise.toml`
+6. Install uv (if Python selected), AWS CLI, Kubernetes tools
 7. Create `~/code` folder structure
 8. Configure Git (prompts for name/email) and SSH keys
 9. Verify installations
 10. Optionally run language smoke tests
 
-Powerlevel10k icons and powerline symbols require the **MesloLGS NF** font. The installer downloads it, installs it on Windows and WSL, and sets Windows Terminal and VS Code to use it. Close and reopen terminal tabs after install if glyphs still look wrong.
+Powerlevel10k is applied automatically: Meslo Nerd Font is installed, Windows Terminal and VS Code are configured, and the repo-managed `~/.p10k.zsh` is linked and activated. Close and reopen terminal tabs after install if glyphs still look wrong. If you don't like the default prompt, run `p10k configure` to pick a different style.
 
 Example language prompts:
 
@@ -118,10 +118,12 @@ Install C/C++ toolchain? [Y/n]: y
 
 Skipped languages are not installed, verified, or smoke-tested. Shared CLI tools (`kubectl`, `helm`, `k9s`, `terraform`) are always installed.
 
-After install, the installer automatically restarts your shell into zsh with your Powerlevel10k rainbow prompt preconfigured. New WSL sessions also open in `~` instead of `/mnt/c/Users/...` (Windows Terminal's default). To tweak the prompt later:
+After install, the installer automatically restarts your shell into zsh with your Powerlevel10k rainbow prompt ready. New WSL sessions also open in `~` instead of `/mnt/c/Users/...` (Windows Terminal's default).
+
+Don't like the default look? Customize it anytime:
 
 ```bash
-p10k configure   # customize prompt
+p10k configure
 ```
 
 Open a project from WSL:

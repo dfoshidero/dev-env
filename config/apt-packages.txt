@@ -14,6 +14,7 @@ zsh
 fzf
 ripgrep
 jq
+fontconfig
 
 # Build essentials and C/C++ toolchain
 build-essential

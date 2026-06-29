@@ -25,6 +25,11 @@ fi
 # Powerlevel10k / Windows Terminal: fix right-prompt spacing and glyph alignment
 ZLE_RPROMPT_INDENT=0
 
+# Dev-env ships ~/.p10k.zsh — skip the interactive configure wizard on first launch
+if [[ -f ~/.p10k.zsh ]]; then
+  typeset -g POWERLEVEL9K_DISABLE_CONFIGURATION_WIZARD=true
+fi
+
 # Oh My Zsh
 export ZSH="$HOME/.oh-my-zsh"
 ZSH_THEME="powerlevel10k/powerlevel10k"
