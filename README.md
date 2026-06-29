@@ -161,7 +161,7 @@ dev-env/
 │   └── gitconfig           # Non-secret Git defaults
 ├── dotfiles/               # Shell config (symlinked to ~)
 ├── scripts/                # Focused installers
-├── templates/              # Project scaffolds
+│   └── windows/            # Windows font/terminal helpers (.ps1)
 └── tests/                  # Post-install smoke tests
 ```
 
@@ -231,10 +231,10 @@ Edit `dotfiles/aliases.zsh`, commit, push, pull on other machines. Re-run `./ins
 
 ### Local secrets and work config
 
-Tokens, PATs, and work-specific paths from your old shell config belong in `~/.dev-env-local.zsh`, not in this repo:
+Tokens, PATs, and work-specific paths from your old shell config belong in `~/.dev-env-local.zsh`, not in this repo. Create the file manually:
 
 ```bash
-cp ~/dev-env/dotfiles/dev-env-local.example.zsh ~/.dev-env-local.zsh
+touch ~/.dev-env-local.zsh
 # edit ~/.dev-env-local.zsh with your tokens and paths
 ```
 
@@ -378,28 +378,6 @@ k9s                              # terminal UI
 ```
 
 Credentials never go in this repo.
-
----
-
-
-
-## Scaffold New Projects
-
-```bash
-./scripts/new-project.sh python my-api projects
-./scripts/new-project.sh react dashboard work
-./scripts/new-project.sh go scraper projects
-./scripts/new-project.sh java spring-api work
-./scripts/new-project.sh c parser learning
-```
-
-Templates live in `templates/`:
-
-- `python` — uv + pyproject.toml
-- `react-vite` — React + Vite (project-local)
-- `go-cli` — Go CLI layout
-- `java-gradle` — Java + Gradle
-- `c-cmake` — C + CMake
 
 ---
 

@@ -8,7 +8,7 @@ export DEV_ENV_ROOT
 export DEV_ENV_CONFIG="${DEV_ENV_ROOT}/config"
 export DEV_ENV_DOTFILES="${DEV_ENV_ROOT}/dotfiles"
 export DEV_ENV_SCRIPTS="${DEV_ENV_ROOT}/scripts"
-export DEV_ENV_TEMPLATES="${DEV_ENV_ROOT}/templates"
+export DEV_ENV_SCRIPTS_WINDOWS="${DEV_ENV_SCRIPTS}/windows"
 export DEV_ENV_TESTS="${DEV_ENV_ROOT}/tests"
 
 # Colors

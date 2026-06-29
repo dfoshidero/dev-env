@@ -64,7 +64,7 @@ install_meslo_fonts_windows() {
     return 0
   fi
 
-  ps_install="${DEV_ENV_SCRIPTS}/install-windows-fonts.ps1"
+  ps_install="${DEV_ENV_SCRIPTS_WINDOWS}/install-windows-fonts.ps1"
   [[ -f "$ps_install" ]] || die "Missing script: $ps_install"
 
   log_info "Registering Meslo Nerd Font on Windows (required for Windows Terminal glyphs)..."
@@ -76,7 +76,7 @@ install_meslo_fonts_windows() {
 }
 
 configure_windows_terminal() {
-  local ps1="${DEV_ENV_SCRIPTS}/configure-windows-terminal-font.ps1"
+  local ps1="${DEV_ENV_SCRIPTS_WINDOWS}/configure-windows-terminal-font.ps1"
 
   [[ -f "$ps1" ]] || die "Missing script: $ps1"
 
@@ -94,7 +94,7 @@ configure_windows_terminal() {
 }
 
 configure_windows_console_font() {
-  local ps1="${DEV_ENV_SCRIPTS}/configure-windows-console-font.ps1"
+  local ps1="${DEV_ENV_SCRIPTS_WINDOWS}/configure-windows-console-font.ps1"
 
   [[ -f "$ps1" ]] || die "Missing script: $ps1"
 
