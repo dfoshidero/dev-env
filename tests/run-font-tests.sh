@@ -177,6 +177,11 @@ test_windows_terminal() {
   pwsh -NoProfile -File "${REPO_ROOT}/tests/windows/test-configure-windows-terminal.ps1"
 }
 
+test_windows_font_install() {
+  powershell.exe -NoProfile -ExecutionPolicy Bypass -File \
+    "$(wslpath -w "${REPO_ROOT}/tests/windows/test-install-windows-fonts.ps1")" | tr -d '\r'
+}
+
 echo ""
 log_info "Running font and terminal tests in $TEST_DIR"
 echo ""
@@ -202,6 +207,11 @@ if command_exists pwsh; then
   run_test "Windows Terminal (pwsh)" test_windows_terminal
 else
   skip_test "Windows Terminal (pwsh)" "pwsh not installed"
+fi
+if wsl_detected && command_exists powershell.exe; then
+  run_test "Windows font install" test_windows_font_install
+else
+  skip_test "Windows font install" "needs WSL with powershell.exe"
 fi
 
 echo ""

@@ -115,9 +115,13 @@ The installer will:
 9. Verify installations
 10. Optionally run language smoke tests
 
-Powerlevel10k setup installs and registers JetBrains Mono Nerd Font on Windows, then sets that font everywhere prompt glyphs render — Windows Terminal, the legacy PowerShell/cmd console, VS Code, and Cursor. Windows Terminal also gets the Catppuccin colour schemes: Latte in light mode and Mocha in dark mode, following the Windows theme unless you have picked one in Windows Terminal. The repo no longer ships a prebuilt `~/.p10k.zsh`, so the Powerlevel10k configuration wizard runs automatically the first time zsh starts — follow its prompts to generate your own `~/.p10k.zsh`. You can re-run `p10k configure` anytime to change the style.
+Powerlevel10k setup installs and registers JetBrains Mono Nerd Font on Windows, checks that Windows can actually render it (the install fails if not), then sets that font everywhere prompt glyphs render — Windows Terminal, the legacy PowerShell/cmd console, VS Code, and Cursor. Windows Terminal also gets the Catppuccin colour schemes: Latte in light mode and Mocha in dark mode, following the Windows theme unless you have picked one in Windows Terminal. The repo no longer ships a prebuilt `~/.p10k.zsh`, so the Powerlevel10k configuration wizard runs automatically the first time zsh starts — follow its prompts to generate your own `~/.p10k.zsh`. You can re-run `p10k configure` anytime to change the style.
 
-> **Glyphs still showing as boxes or** `?` **after install?** This is always a *terminal font* problem, not a shell problem — the app you're looking at isn't using a Nerd Font yet. The installer configures Windows Terminal, the PowerShell/cmd console, VS Code, and Cursor automatically, but font changes never apply to already-open windows: **fully close and reopen the app** (console font changes only affect newly opened console windows). To set it by hand, point the terminal's font to **JetBrainsMono Nerd Font** (the legacy console lists it as **JetBrainsMono NFM**).
+> **Glyphs still showing as boxes or** `?` **after install?** This is always a *terminal font* problem, not a shell problem — the app you're looking at isn't using a Nerd Font yet. The installer configures Windows Terminal, the PowerShell/cmd console, VS Code, and Cursor automatically, but font changes never apply to already-open windows: **fully quit and restart the app** (console font changes only affect newly opened console windows). Apps read the list of installed fonts once at startup, and VS Code and Cursor keep a background process alive between windows, so reopening a window is not enough — make sure no `Code.exe` / `Cursor.exe` is left in Task Manager, or sign out of Windows and back in. To set it by hand, point the terminal's font to **JetBrainsMono Nerd Font** (the legacy console lists it as **JetBrainsMono NFM**).
+>
+> To check the Windows side, `bash scripts/verify.sh` reports whether Windows can find the font.
+
+> **Matching a Mac:** the installer pins Nerd Fonts `v3.5.1` (`NERD_FONTS_VERSION` in `scripts/setup-powerlevel10k.sh`). On macOS, `brew install --cask font-jetbrains-mono-nerd-font` installs the same family; check its version with `brew info --cask font-jetbrains-mono-nerd-font` and use the same release on both machines.
 
 Example language prompts:
 
@@ -427,7 +431,7 @@ Smoke tests verify:
 - C (`gcc`)
 - C++(`clang++`/`g++`)
 
-Test the font, editor and Windows Terminal setup (no WSL or Windows needed; Windows Terminal checks run when `pwsh` is installed):
+Test the font, editor and Windows Terminal setup (no WSL or Windows needed; Windows Terminal checks run when `pwsh` is installed, and the Windows font install checks run under WSL against a scratch registry key and folder):
 
 ```bash
 ./tests/run-font-tests.sh

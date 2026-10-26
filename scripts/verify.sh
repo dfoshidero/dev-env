@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 source "$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)/bootstrap.sh"
+# shellcheck source=setup-powerlevel10k.sh
+source "${DEV_ENV_SCRIPTS}/setup-powerlevel10k.sh"
 
 export PATH="${HOME}/.local/bin:${PATH}"
 [[ -f "${HOME}/.config/mise/config.toml" ]] && eval "$(mise activate bash 2>/dev/null)" || true
@@ -105,6 +107,17 @@ else
   check_skipped "cmake"
   check_skipped "make"
   check_skipped "gdb"
+fi
+
+# Terminal font on the Windows side (what Windows Terminal and VS Code render with)
+if wsl_detected && command_exists powershell.exe; then
+  if check_windows_font; then
+    log_ok "Windows font: ${TERMINAL_FONT_FACE}"
+    PASS=$((PASS + 1))
+  else
+    log_error "Windows font: ${TERMINAL_FONT_FACE} NOT FOUND (re-run scripts/setup-powerlevel10k.sh)"
+    FAIL=$((FAIL + 1))
+  fi
 fi
 
 # Optional

@@ -85,11 +85,17 @@ install_fonts_windows() {
   [[ -f "$ps_install" ]] || die "Missing script: $ps_install"
 
   log_info "Registering JetBrains Mono Nerd Font on Windows (required for Windows Terminal glyphs)..."
-  if powershell.exe -NoProfile -ExecutionPolicy Bypass -File "$(wslpath -w "$ps_install")" -FontsDir "$(wslpath -w "$FONT_DIR")"; then
-    log_ok "JetBrains Mono Nerd Font registered on Windows"
-  else
-    log_warn "Windows font registration failed — glyphs may show as boxes until font is installed"
+  if ! powershell.exe -NoProfile -ExecutionPolicy Bypass -File "$(wslpath -w "$ps_install")" \
+    -FontsDir "$(wslpath -w "$FONT_DIR")" -FamilyName "$TERMINAL_FONT_FACE"; then
+    die "Windows cannot find ${TERMINAL_FONT_FACE} after installing it — terminals and editors would fall back to another font"
   fi
+  log_ok "JetBrains Mono Nerd Font registered on Windows"
+}
+
+# Ask DirectWrite (what Windows Terminal and VS Code render with) whether the font resolves.
+check_windows_font() {
+  local ps1="${DEV_ENV_SCRIPTS_WINDOWS}/check-windows-font.ps1"
+  powershell.exe -NoProfile -ExecutionPolicy Bypass -File "$(wslpath -w "$ps1")" -FamilyName "$TERMINAL_FONT_FACE" >/dev/null 2>&1
 }
 
 configure_windows_terminal() {
@@ -176,7 +182,7 @@ main() {
     configure_windows_terminal
     configure_windows_console_font
     configure_editor_fonts
-    log_info "Close and reopen Windows Terminal / PowerShell / VS Code / Cursor for font changes to take effect"
+    log_info "Fully quit and restart Windows Terminal / PowerShell / VS Code / Cursor for font changes to take effect (reopening a window is not enough)"
   else
     log_info "Not running in WSL — Linux fonts installed; configure your terminal font to ${TERMINAL_FONT_FACE}"
   fi
