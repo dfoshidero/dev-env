@@ -2,7 +2,7 @@
 # legacy PowerShell and cmd.exe windows render Powerlevel10k / oh-my-posh glyphs
 # instead of boxes / question marks. Windows Terminal is configured separately.
 param(
-    [string]$FontFace = "MesloLGS NF",
+    [string]$FontFace = "JetBrainsMono NFM",
     [int]$FontSize = 16
 )
 

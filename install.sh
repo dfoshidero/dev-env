@@ -27,7 +27,7 @@ main() {
   # 3. Dotfiles
   run_script "${DEV_ENV_SCRIPTS}/install-dotfiles.sh"
 
-  # 4. Meslo font and Windows Terminal font (run `p10k configure` manually)
+  # 4. JetBrains Mono Nerd Font, Windows Terminal font and Catppuccin colours (run `p10k configure` manually)
   run_script "${DEV_ENV_SCRIPTS}/setup-powerlevel10k.sh"
 
   # 5. mise + tool versions

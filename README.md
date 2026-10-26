@@ -65,13 +65,15 @@ Restart if prompted. Open **Ubuntu** from the Start menu and create your Linux u
 
 **VS Code extensions (recommended):**
 
-- Remote - WSL
-- Python, Ruff
-- Go
-- Java Extension Pack
-- C/C++
-- Docker
-- YAML, Kubernetes
+- Remote - WSL, Dev Containers
+- Python, Ruff, Jupyter
+- Go, Java Extension Pack, C/C++, rust-analyzer
+- ESLint, Prettier, Pretty TypeScript Errors
+- Docker, YAML, Kubernetes, HashiCorp Terraform, Even Better TOML
+- Git Graph, Error Lens, Vim
+- Catppuccin, Material Icon Theme
+
+Turn on **Settings Sync** (signed in with GitHub) to bring the extensions and settings (theme, fonts, layout) over from another machine. The installer provides the font itself, which Settings Sync does not.
 
 Enable Docker Desktop WSL integration: **Settings → Resources → WSL Integration → Ubuntu**.
 
@@ -113,9 +115,9 @@ The installer will:
 9. Verify installations
 10. Optionally run language smoke tests
 
-Powerlevel10k setup installs and registers the Meslo Nerd Font on Windows, then sets that font everywhere prompt glyphs render — Windows Terminal, the legacy PowerShell/cmd console, VS Code, and Cursor. The repo no longer ships a prebuilt `~/.p10k.zsh`, so the Powerlevel10k configuration wizard runs automatically the first time zsh starts — follow its prompts to generate your own `~/.p10k.zsh`. You can re-run `p10k configure` anytime to change the style.
+Powerlevel10k setup installs and registers JetBrains Mono Nerd Font on Windows, then sets that font everywhere prompt glyphs render — Windows Terminal, the legacy PowerShell/cmd console, VS Code, and Cursor. Windows Terminal also gets the Catppuccin colour schemes: Latte in light mode and Mocha in dark mode, following the Windows theme unless you have picked one in Windows Terminal. The repo no longer ships a prebuilt `~/.p10k.zsh`, so the Powerlevel10k configuration wizard runs automatically the first time zsh starts — follow its prompts to generate your own `~/.p10k.zsh`. You can re-run `p10k configure` anytime to change the style.
 
-> **Glyphs still showing as boxes or** `?` **after install?** This is always a *terminal font* problem, not a shell problem — the app you're looking at isn't using a Nerd Font yet. The installer configures Windows Terminal, the PowerShell/cmd console, VS Code, and Cursor automatically, but font changes never apply to already-open windows: **fully close and reopen the app** (console font changes only affect newly opened console windows). To set it by hand, point the terminal's font to **MesloLGS NF**.
+> **Glyphs still showing as boxes or** `?` **after install?** This is always a *terminal font* problem, not a shell problem — the app you're looking at isn't using a Nerd Font yet. The installer configures Windows Terminal, the PowerShell/cmd console, VS Code, and Cursor automatically, but font changes never apply to already-open windows: **fully close and reopen the app** (console font changes only affect newly opened console windows). To set it by hand, point the terminal's font to **JetBrainsMono Nerd Font** (the legacy console lists it as **JetBrainsMono NFM**).
 
 Example language prompts:
 
@@ -158,11 +160,12 @@ dev-env/
 │   ├── mise.toml           # Global tool versions
 │   ├── apt-packages.txt    # Ubuntu packages
 │   ├── folders.txt         # ~/code layout
-│   └── gitconfig           # Non-secret Git defaults
+│   ├── gitconfig           # Non-secret Git defaults
+│   └── windows-terminal/   # Catppuccin colour schemes
 ├── dotfiles/               # Shell config (symlinked to ~)
 ├── scripts/                # Focused installers
 │   └── windows/            # Windows font/terminal helpers (.ps1)
-└── tests/                  # Post-install smoke tests
+└── tests/                  # Smoke tests and font/terminal tests
 ```
 
 ---
@@ -423,6 +426,19 @@ Smoke tests verify:
 - Java (`javac` + `java`)
 - C (`gcc`)
 - C++(`clang++`/`g++`)
+
+Test the font, editor and Windows Terminal setup (no WSL or Windows needed; Windows Terminal checks run when `pwsh` is installed):
+
+```bash
+./tests/run-font-tests.sh
+
+# Also download the real Nerd Fonts release to check its layout
+DEV_ENV_TEST_NETWORK=1 ./tests/run-font-tests.sh
+
+# Everything, including the PowerShell checks, in a container
+docker run --rm -v "$PWD":/repo:ro -e DEV_ENV_TEST_NETWORK=1 mcr.microsoft.com/powershell:lts-ubuntu-22.04 \
+  bash -c 'apt-get update -qq && apt-get install -y -qq jq xz-utils shellcheck curl fontconfig && cp -r /repo /tmp/repo && /tmp/repo/tests/run-font-tests.sh'
+```
 
 ---
 

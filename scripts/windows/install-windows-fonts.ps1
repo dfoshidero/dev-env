@@ -1,17 +1,10 @@
-# Install MesloLGS NF into the current Windows user font store and register for GDI.
+# Install every .ttf in FontsDir into the current Windows user font store and register it for GDI.
 param(
     [Parameter(Mandatory = $true)]
     [string]$FontsDir
 )
 
 $ErrorActionPreference = "Stop"
-
-$fontFiles = @(
-    "MesloLGS NF Regular.ttf",
-    "MesloLGS NF Bold.ttf",
-    "MesloLGS NF Italic.ttf",
-    "MesloLGS NF Bold Italic.ttf"
-)
 
 $userFonts = Join-Path $env:LOCALAPPDATA "Microsoft\Windows\Fonts"
 $regPath = "HKCU:\Software\Microsoft\Windows NT\CurrentVersion\Fonts"
@@ -23,13 +16,14 @@ if (-not (Test-Path -LiteralPath $FontsDir)) {
 
 New-Item -ItemType Directory -Force -Path $userFonts | Out-Null
 
+$fontFiles = @(Get-ChildItem -LiteralPath $FontsDir -Filter *.ttf | ForEach-Object { $_.Name })
+if ($fontFiles.Count -eq 0) {
+    Write-Error "No .ttf files found in $FontsDir"
+    exit 1
+}
+
 foreach ($file in $fontFiles) {
     $src = Join-Path $FontsDir $file
-    if (-not (Test-Path -LiteralPath $src)) {
-        Write-Warning "Missing font file: $src"
-        continue
-    }
-
     $dest = Join-Path $userFonts $file
     Copy-Item -LiteralPath $src -Destination $dest -Force
 

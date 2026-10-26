@@ -3,6 +3,7 @@ git
 curl
 wget
 unzip
+xz-utils
 zip
 ca-certificates
 gnupg
