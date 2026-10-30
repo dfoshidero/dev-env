@@ -41,6 +41,7 @@ if [[ -f "${DEV_ENV_CONFIG}/mise.toml" ]]; then
     read_mise_tool_line helm
     read_mise_tool_line k9s
     read_mise_tool_line terraform
+    read_mise_tool_line neovim
   } > "$MISE_CONFIG_FILE"
   log_ok "Synced mise config -> $MISE_CONFIG_FILE"
 fi

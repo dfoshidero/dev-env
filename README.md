@@ -13,7 +13,7 @@ Windows (desktop only)
 └── WSL2 Ubuntu
     │
     ├── zsh + Oh My Zsh + Powerlevel10k
-    ├── mise (language + CLI versions)
+    ├── mise (language + CLI versions, Neovim)
     ├── uv (Python project environments)
     ├── Homebrew (extra Linux CLI formulae)
     ├── AWS CLI, kubectl, helm, k9s, terraform
@@ -133,7 +133,7 @@ Install Java? [Y/n]: n
 Install C/C++ toolchain? [Y/n]: y
 ```
 
-Skipped languages are not installed, verified, or smoke-tested. Shared CLI tools (`kubectl`, `helm`, `k9s`, `terraform`) are always installed.
+Skipped languages are not installed, verified, or smoke-tested. Shared CLI tools (`kubectl`, `helm`, `k9s`, `terraform`) and Neovim (`nvim`) are always installed via mise.
 
 After install, the installer automatically restarts your shell into zsh, which launches the Powerlevel10k configuration wizard on first run so you can build your prompt. New WSL sessions also open in `~` instead of `/mnt/c/Users/...` (Windows Terminal's default).
 
@@ -252,7 +252,7 @@ That file is sourced early from `.zshrc` and is gitignored.
 **Global (machine):** language runtimes and shared CLIs
 
 ```
-python, node, go, java, git, aws, kubectl, k9s, helm, terraform
+python, node, go, java, git, aws, kubectl, k9s, helm, terraform, nvim
 ```
 
 **Project-local:** frameworks and build tools

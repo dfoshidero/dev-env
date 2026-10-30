@@ -94,6 +94,9 @@ check_cmd "helm"
 check_cmd "k9s"
 check_cmd "terraform"
 
+# Editor
+check_cmd "neovim" "nvim"
+
 # C/C++ toolchain
 if language_selected cpp; then
   check_cmd "gcc"
